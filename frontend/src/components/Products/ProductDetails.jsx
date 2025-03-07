@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react'
+import {toast} from "sonner";
+import ProductGrid from './ProductGrid';
+
 const selectedProduct = {
     name: "Stylish Jacket",
     price : 120,
@@ -14,11 +17,37 @@ const selectedProduct = {
     },
     {
         url : "https://picsum.photos/500/500?random=2",
-        altText : "Stylish Jacket 1"
+        altText : "Stylish Jacket 2"
     }
 ]
 }
 
+const similarProducts = [
+    {
+        _id: 1,
+        name: "Product 1",
+        price: 100,
+        images: [{url : "https://picsum.photos/500/500?random=3" }]
+    },
+    {
+        _id: 2,
+        name: "Product 2",
+        price: 100,
+        images: [{url : "https://picsum.photos/500/500?random=4" }]
+    },
+    {
+        _id: 1,
+        name: "Product 3",
+        price: 100,
+        images: [{url : "https://picsum.photos/500/500?random=5" }]
+    },
+    {
+        _id: 1,
+        name: "Product 4",
+        price: 100,
+        images: [{url : "https://picsum.photos/500/500?random=6" }]
+    }
+]
 
 const ProductDetails = () => {
     const [mainImage , setMainImage] = useState("");
@@ -37,6 +66,24 @@ const ProductDetails = () => {
 const handleQuantityChange = (action) => {
     if (action === "plus") setQuantity((prev) => prev + 1);
     if (action === "minus" && quantity > 1) setQuantity((prev) => prev - 1)
+}
+
+const handleAddToCart = () => {
+    if (!selectedSize || !selectedColor) {
+        toast.error("Please select a size and color before adding to cart." , {
+            duration: 1000,
+        })
+        return;
+    }
+    setIsButtonDisabled(true);
+
+    setTimeout(() => {
+        toast.success("Product added to cart!", {
+            duration: 1000,
+        })
+        setIsButtonDisabled(false);
+    }, 500);
+
 }
 
   return (
@@ -140,8 +187,14 @@ const handleQuantityChange = (action) => {
                  <button onClick={() => handleQuantityChange("plus")} className='px-2 py-1 bg-gray-200 rounded text-lg'> + </button>
                </div>
               </div>
-                <button className='bg-black text-white py-2 px-6 rounded w-full mb-4'>
-                    ADD TO CART
+                <button onClick={handleAddToCart} 
+                disabled={isButtonDisabled}
+                className={`bg-black text-white py-2 px-6 rounded w-full mb-4 ${
+                    isButtonDisabled 
+                ? "cursor-not-allowed opacity-50"
+                 : "hover-bg-gray-900" }`}
+                 >
+                    {isButtonDisabled ? "Adding..." : "ADD TO CART" }
                 </button>
                 
              <div className='mt-10 text-gray-700'>
@@ -162,6 +215,15 @@ const handleQuantityChange = (action) => {
 
              </div>
         </div>
+
+          <div className='mt-20'>
+            <h2 className='text-2xl text-center font-medium mb-4'>
+                You May Also Like
+            </h2>
+
+            <ProductGrid products={similarProducts}/>
+
+          </div>
       </div>
     </div>
   )
