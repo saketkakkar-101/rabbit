@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import {useNavigate, useSearchParams} from "react-router-dom"
 
 const FilterSidebar = () => {
-  const [searchParams, setSearchParams] = useState(new URLSearchParams());
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const navigate = useNavigate();
   const [filters , setFilters] = useState({
@@ -58,8 +58,7 @@ const brands = [
 const genders = ["Men" , "Women"];
 
 useEffect(() => {
-  if (!searchParams) return;
-  const params = Object.fromEntries([...searchParams.entries()]);
+  const params = Object.fromEntries([...searchParams]);
 
   setFilters({
 category : params.category || "",
@@ -103,6 +102,14 @@ const updateURLParams = (newFilters) => {
   })
   setSearchParams(params);
   navigate(`?${params.toString()}`)
+}
+
+const handlePriceChange = (e) => {
+  const newprice = e.target.value;
+  setPriceRange([0, newprice]);
+  const newFilters = {...filters, minPrice: 0 , maxPrice: newprice}
+  setFilters(filters);
+  updateURLParams(newFilters)
 }
 
   return (
@@ -192,7 +199,7 @@ const updateURLParams = (newFilters) => {
 
     <div className='mb-6'>
     <label className='block text-gray-600 font-medium mb-2'>Material</label>
-    {sizes.map((material) => (
+    {materials.map((material) => (
       <div key={material} className='flex items-center mb-1'>
         <input
          type='checkbox'
@@ -233,7 +240,13 @@ const updateURLParams = (newFilters) => {
 <label className='block text-gray-600 font-medium mb-2'>
   Price Range
 </label>
-<input type="range" name='priceRange' min={0} max={100} 
+<input 
+type="range"
+ name='priceRange'
+  min={0}
+   max={100}
+   value={priceRange[1]}
+   onChange={handlePriceChange} 
 className='w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer' />
 <div className='flex justify-between text-gray-600 mt-2'>
   <span>$0</span>

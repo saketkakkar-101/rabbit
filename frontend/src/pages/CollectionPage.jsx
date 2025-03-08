@@ -21,8 +21,11 @@ const handleClickOutside = (e) => {
 
   useEffect(() => {
     document.addEventListener("mousedown" , handleClickOutside)
-    document.removeEventListener("mousedown" , handleClickOutside)
-  })
+    return () => {
+      document.removeEventListener("mousedown" , handleClickOutside)
+    }
+    
+  } , [])
 
   useEffect(() =>{
     setTimeout(() => {
