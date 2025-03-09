@@ -37,7 +37,7 @@ const Checkout = () => {
 
     const handleCreateCheckout = (e) => {
         e.preventDefault();
-        // setCheckoutId(1234)
+        setCheckoutId(1234)
     }
 
 const handlePaymentSuccess = (details) => {
@@ -171,7 +171,31 @@ const handlePaymentSuccess = (details) => {
 
  </form>
          
-    </div>       
+    </div>  
+    {/* Right section */} 
+    <div className='bg-gray-50 p-6 rounded-lg'>
+        <h3 className='text-lg mb-4'>Order Summary</h3>
+        <div className='border-t py-4 mb-4'>
+            {cart.products.map((product, index) => (
+                <div key ={index} className='flex items-start justify-between py-2 border-b'>
+                    <div className='flex items-start'>
+                     <img 
+                     src={product.image}
+                     alt={product.name}
+                     className='w-20 h-24 object-cover mr-4'
+                     />
+                     <div>
+                        <h3 className='text-md'>{product.name}</h3>
+                        <p className='text-gray-500'>Size: {product.size}</p>
+                        <p className='text-gray-500'>Color: {product.color}</p>
+                     </div>
+                     
+                    </div>
+                    <p className='text-xl'>${product.price?.toLocaleString()}</p>
+                </div>
+            ))}
+        </div>
+        </div>    
     </div>
   )
 }
