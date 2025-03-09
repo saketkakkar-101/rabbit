@@ -195,6 +195,18 @@ const handlePaymentSuccess = (details) => {
                 </div>
             ))}
         </div>
+        <div className='flex justify-between items-center text-lg mb-4'>
+          <p>Subtotal</p>
+          <p>${cart.totalPrice?.toLocaleString()}</p>
+        </div>
+        <div className='flex justify-between items-center text-lg'>
+            <p>Shipping</p>
+            <p>Free</p>
+        </div>
+        <div className='flex justify-between items-center text-lg mt-4 border-t pt-4'>
+            <p>Total</p>
+            <p>${cart.totalPrice?.toLocaleString()}</p>
+        </div>
         </div>    
     </div>
   )
