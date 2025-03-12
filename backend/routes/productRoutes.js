@@ -241,15 +241,84 @@ res.json(products)
     }
 });
 
+//route get api products best seller
+    // desc retrieve the product with highest rating
+    // access public
+
+
+    router.get("/best-seller" , async(req,res) => {
+        try {
+            const bestSeller = await Product.findOne().sort({ rating: -1});
+            if (bestSeller) {
+                res.json(bestSeller);
+            } else {
+                res.status(404).json({message: "No best seller found"})
+            }
+        } catch (error) {
+            console.error(error);
+            res.status(500).send("Server Error");
+        }
+    })
+
+    // route get /api/ products/ new-arrivals
+    // desc retrieve latest 8 products - Creation data
+    // access Public
+
+    router.get("/new-arrivals", async (req, res) => {
+        try {
+            const newArrivals = await Product.find().sort({ created: -1}).limit(8);
+            res.json(newArrivals);
+        } catch (error) {
+            console.error(error);
+            res.status(500).send("Server Error");
+        }
+    })
+
 // route get/ api/products/:id
 
 router.get("/:id" , async(req , res) => {
     try {
-   const product = await Product.findById(req.params.id)      
+   const product = await Product.findById(req.params.id);      
+    if (product) {
+        res.json(product);
+    } else {
+        res.status(404).json({ message: "Product Not Found"});
+    }
     } catch (error) {
-        
+        console.error(error);
+        res.status(500).send("Server Error");
     }
 })
+
+router.get("/similar/:id", async (req, res) => {
+    const { id } = req.params;
+    
+    try {
+        // Step 1: Check if the product exists
+        const product = await Product.findById(id);
+        
+        // If no product is found, return an error
+        if (!product) {
+            return res.status(404).json({ message: "Product not found" });
+        }
+
+        // Step 2: Find similar products based on gender and category
+        const similarProducts = await Product.find({
+            _id: { $ne: id }, // Exclude the current product
+            gender: product.gender,
+            category: product.category,
+        }).limit(4); // Limit the number of similar products to 4
+
+        // Return the similar products
+        res.json(similarProducts);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Server Error");
+    }
+
+    
+    
+});
 
 
 module.exports = router;
