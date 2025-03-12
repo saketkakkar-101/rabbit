@@ -28,7 +28,7 @@ const createdUser = await User.create({
 const userID = createdUser._id;
 
 const sampleProducts = products.map((product) => {
-    return {...product, userID};
+    return {...product, user: userID};
 });
 
 // Insert the product into the database
