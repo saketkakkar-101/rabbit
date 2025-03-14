@@ -11,6 +11,7 @@ const uploadRoutes = require("./routes/uploadRoutes")
 const subscriberRoute = require("./routes/subscriberRoute")
 const adminRoutes = require("./routes/adminRoutes")
 const productAdminRoutes = require("./routes/productAdminRoutes")
+const adminOrderRoutes = require("./routes/adminOrderRoutes")
 
 
 const app = express();
@@ -43,6 +44,7 @@ app.use("/api" , subscriberRoute);
 
 app.use("/api/admin/users", adminRoutes)
 app.use("/api/admin/products", productAdminRoutes)
+app.use("/api/admin/orders", adminOrderRoutes)
 
 
 
