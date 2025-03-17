@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState , useEffect } from 'react'
 import Hero from '../components/Layouts/Hero'
 import GenderCollectionSection from '../components/Products/GenderCollectionSection'
 import NewArrivals from '../components/Products/NewArrivals'
@@ -6,7 +6,10 @@ import ProductDetails from '../components/Products/ProductDetails'
 import ProductGrid from '../components/Products/ProductGrid'
 import FeaturedCollection from '../components/Products/FeaturedCollection'
 import FeaturedSection from '../components/Products/FeaturedSection'
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";// In Home.jsx
+import { fetchProductByFilters } from '../redux/slices/productsSlice';
+import axios from 'axios'
+
 
 
 
@@ -18,7 +21,7 @@ const [bestSellerProduct, setBestSellerProduct] = useState(null);
 useEffect(() => {
 // fetch products for a specific collection
 dispatch(
-  fetchProductsByFilters({
+  fetchProductByFilters({
     gender: "Women",
     category: "Bottom Wear",
     limit: 8,

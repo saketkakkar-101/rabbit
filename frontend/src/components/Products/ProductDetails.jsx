@@ -3,7 +3,8 @@ import {toast} from "sonner";
 import ProductGrid from './ProductGrid';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-
+import {fetchProductDetails, fetchSimilarProducts} from '../../redux/slices/productsSlice'
+import {addToCart} from "../../redux/slices/cartSlice"
 
 
 const ProductDetails = ({ productId }) => {
@@ -12,7 +13,7 @@ const ProductDetails = ({ productId }) => {
     const { selectedProduct, loading, error, similarProducts } = useSelector(
         (state) => state.products
     );
-    const {userId, guestId} = useSelector((state) => state.auth)
+    const {user, guestId} = useSelector((state) => state.auth)
     const [mainImage , setMainImage] = useState("");
     const [selectedSize, setSelectedSize] = useState("");
     const [selectedColor, setSelectedColor] = useState("");
@@ -59,11 +60,27 @@ dispatch(
         userId: user?._id,
     })
 )
+.then(() => {
+    toast.success("Product added to cart!" , {
+        duration: 1000,
+    })
+})
+.finally(() => {
+    setIsButtonDisabled(false);
+})
+};
 
+if (loading) {
+    return <p>Loading...</p>
+}
+
+if (error) {
+    return <p>Error: {error}</p>
 }
 
   return (
     <div className='p-6'>
+        {selectedProduct && (
       <div className='max-w-6xl mx-auto bg-white p-8 rounded-lg'>
         <div className='flex flex-col md:flex-row'>
            {/* Left Thumbnails */}
@@ -197,10 +214,11 @@ dispatch(
                 You May Also Like
             </h2>
 
-            <ProductGrid products={similarProducts}/>
+            <ProductGrid products={similarProducts} loading={loading} error={error}/>
 
           </div>
       </div>
+      )}
     </div>
   )
 }
