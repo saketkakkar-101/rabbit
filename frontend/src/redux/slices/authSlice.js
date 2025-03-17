@@ -10,7 +10,7 @@ const userFromStorage = localStorage.getItem("userInfo")
 // check for an existing guest ID in the localstorage or generate a new one
 
 const initialGuestId = 
-localStorage.getItem("guestId") || `guest_${new Date().getItem()}`;
+localStorage.getItem("guestId") || `guest_${new Date().getTime()}`;
 localStorage.setItem("guestId", initialGuestId);
 
 // Initial state
