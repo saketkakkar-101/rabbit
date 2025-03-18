@@ -1,7 +1,12 @@
 import React from 'react'
 import MyOrdersPage from './MyOrdersPage'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
+  const {user} = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   return (
     <div className='min-h-screen flex flex-col'>
         <div className='flex-grow container mx-auto p-4 md:p-6'>
