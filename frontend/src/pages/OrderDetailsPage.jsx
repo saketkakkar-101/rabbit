@@ -1,41 +1,22 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom'
 import { Link } from 'react-router-dom';
+import { fetchOrderDetails } from '../redux/slices/orderSlice';
 
 const OrderDetailsPage = () => {
 
 const {id} = useParams();
-const [orderDetails , setOrderDetails] = useState(null);
 
-useEffect(()=> {
-    const mockOrderDetails = {
-        _id : id,
-        createdAt: new Date(),
-        isPaid: true,
-        isDelivered: false,
-        paymentMethod: "PayPal",
-        shippingMethod: "Standard",
-        shippingAddress: {city: "New York" , country: "USA"},
-        orderItems: [
-            {
-                productId: "1",
-                name: "jacket",
-                price: 120,
-                quantity: 1,
-                image: "https://picsum.photos/150?random=1"
-            },
-            {
-                productId: "2",
-                name: "Shirt",
-                price: 150,
-                quantity: 2,
-                image: "https://picsum.photos/150?random=2"
-            }
-        ]
-    };
-setOrderDetails(mockOrderDetails);
+const dispatch = useDispatch();
+const {orderDetails, loading, error} = useSelector((state) => state.orders);
 
-}, [id])
+useEffect(() => {
+    dispatch(fetchOrderDetails(id));
+}, [dispatch, id]);
+
+if(loading) return <p>Loading...</p>
+if(error) return <p>Error: {error}</p>
 
   return (
     <div className='max-w-7xl mx-auto p-4 sm:p-6'>
@@ -119,7 +100,7 @@ setOrderDetails(mockOrderDetails);
                            </td>
  
                         <td className='py-2 px-4'> ${item.price} </td>
-                        <td className='py-2 px-4'> ${item.quantity} </td>
+                        <td className='py-2 px-4'> {item.quantity} </td>
                         <td className='py-2 px-4'> ${item.price * item.quantity} </td>
                          
 

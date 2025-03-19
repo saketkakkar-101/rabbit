@@ -11,7 +11,7 @@ export const fetchUsers = createAsyncThunk("admin/fetchUsers", async() =>{
             headers: {Authorization: `Bearer ${localStorage.getItem("userToken")}`},
         }
     );
-    response.data;
+   return response.data;
 })
 
 // add the create user action
@@ -50,7 +50,7 @@ export const updateUser = createAsyncThunk(
                 },
             }
         );
-        response.data;
+     return   response.data.user;
     }
 )
 
@@ -58,7 +58,7 @@ export const updateUser = createAsyncThunk(
 
 export const deleteUser = createAsyncThunk("admin/deleteUser", async(id) => {
     await axios.delete(
-        `${import.meta.env.VITE_BACKEND_URL}/api/users/${id}`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/admin/users/${id}`,
         {
             headers : {
                 Authorization: `Bearer ${localStorage.getItem("userToken")}`,
